@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vengeance — Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F7F8FA; --surface: #FFFFFF; --border: #E4E7ED;
+      --text-1: #111318; --text-2: #5A6173; --text-3: #9AA0B0;
+      --accent: #1A56DB; --accent-dim: #EEF3FF; --radius: 10px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--text-1);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
+    .subtitle { font-size: 13px; color: var(--text-3); }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      padding: 14px 18px;
+      gap: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .setting-row:last-child { border-bottom: none; }
+
+    .setting-text { flex: 1; }
+    .setting-name { font-size: 14px; font-weight: 500; }
+    .setting-desc { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+    .switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0;
+      background: var(--border); border-radius: 20px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px; left: 3px; top: 3px;
+      background: white; border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .switch input:checked + .slider { background: var(--accent); }
+    .switch input:checked + .slider::before { transform: translateX(18px); }
+
+    .saved-toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--text-1); color: white;
+      padding: 8px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 500;
+      opacity: 0; transition: opacity 0.2s;
+      pointer-events: none;
+    }
+    .saved-toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5L2 4.5V8C2 11.5 4.5 14.5 8 15.5C11.5 14.5 14 11.5 14 8V4.5L8 1.5Z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M5.5 8L7 9.5L10.5 6" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Vengeance Settings</h1>
+        <div class="subtitle">Configure your protection preferences</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Protection</div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-name">Domain Blocking</div>
+          <div class="setting-desc">Block known ad networks and AI scraper domains</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="s-blocking" /><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-name">Tracker Removal</div>
+          <div class="setting-desc">Remove tracking pixels and invisible beacons from pages</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="s-trackers" /><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-name">UA Rotation</div>
+          <div class="setting-desc">Randomise your browser identity each session</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="s-ua" /><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-name">AI Risk Badge</div>
+          <div class="setting-desc">Show an indicator when visiting AI-data-harvesting sites</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="s-badge" /><span class="slider"></span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="saved-toast" id="toast">Settings saved</div>
+  <script src="options.js"></script>
+</body>
+</html>
